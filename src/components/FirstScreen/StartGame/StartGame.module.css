@@ -1,0 +1,25 @@
+.start_container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--overall-bg);
+    color: white;
+}
+
+.start_headline {
+    font-size: 4rem;
+    text-align: center;
+}
+
+/*GALAXY FOLD*/
+
+@media(max-width:376px) {
+
+.start-headline {
+    font-size: 3rem;
+}
+
+}

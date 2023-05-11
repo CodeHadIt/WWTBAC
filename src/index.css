@@ -1,13 +1,400 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --overall-bg: #020230;
+  --question-gradient_one: #100241;
+  --answer-gradient_one: #0e0124;
+  --answer-gradient_two: #220740;
+  --accent: mediumturquoise;
+  font-size: 10px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+body {
+  font-family: 'Karla', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+a:hover{
+  text-decoration: underline;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.app {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 75% 25%;
+  background-color: var(--overall-bg);
+  color: white;
+  overflow: hidden;
+}
+
+/*MAIN CONTAINER WITH QUESTIONS AND TIMER*/
+
+.main-container {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), var(--overall-bg)), url("./assets/images/wwtbamBackground.jpg") center;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-gpt_answer, .explanation {
+  text-align: center;
+  font-size: 1.8rem;
+  border: 2px solid white;
+  border-radius: 0.5rem;
+  background: linear-gradient(var(--question-gradient_one), black);
+  position: absolute;
+  top: 5%;
+  left: 20%;
+  padding: 1.4rem 1rem;
+  z-index: 99;
+  max-width: 60rem;
+}
+
+.chat-gpt_answer {
+  border: 2px solid var(--question-gradient_one);
+  background: var(--accent);
+  color: var(--question-gradient_one);
+}
+
+.top-container {
+  height: 50%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.top-items {
+  position: relative;
+  top: 10%;
+  font-size: 2.5rem;
+  font-weight: 700;
+  width: 11rem;
+  height: 11rem;
+  text-align: center;
+  display: grid;
+  place-items: center;
+  color: white;
+  border-radius: 50%;
+  border: 3px solid white;
+  background: linear-gradient(var(--answer-gradient_one), var(--answer-gradient_two));
+  cursor: pointer;
+}
+
+.time {
+  font-size: 3rem;
+}
+
+.top-items.used_life-line {
+  opacity: 0.7;
+  background-color: gainsboro;
+}
+
+.ask-gpt {
+  font-size: 2rem;
+  padding: 0.5rem;
+}
+
+/*Bottom for Question and Answers*/
+
+/*Question and answer*/
+
+.q-and-a_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.question {
+  width: 85%;
+  font-size: 2.2rem;
+  background: linear-gradient(var(--question-gradient_one), black);
+  border: 2px solid white;
+  border-radius: 0.5rem;
+  text-align: center;
+  padding: 2rem;
+  
+}
+
+.answers-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.answer {
+  font-size: 1.8rem;
+  width: 40%;
+  padding: 1rem;
+  text-align: center;
+  background: linear-gradient(var(--answer-gradient_one) ,var(--answer-gradient_two));
+  border: 1px solid white;
+  border-radius: 1.5rem;
+  margin-inline: 1rem;
+  margin-top: 2rem;
+  cursor: pointer;
+}
+
+.answer:hover, .answer:active {
+  background: mediumblue;
+}
+
+.answer.correct {
+  animation: correct-answer 3s ease forwards;
+}
+
+/*Animation for correct answers*/
+
+@keyframes correct-answer {
+  0%, 10%, 20% {
+    background: mediumblue;
+  }
+
+  5%, 15%{
+    background: linear-gradient(var(--answer-gradient_one),
+      var(--answer-gradient_two));
+  }
+
+  25%, 100% {
+    background: green;
+  }
+}
+
+.answer.wrong {
+  animation: wrong-answer 3s ease forwards;
+}
+
+/*Animation for wrong answers*/
+
+@keyframes wrong-answer {
+  0%, 25%, 45% {
+    background: mediumblue;
+  }
+
+  20%, 40%, 60% {
+    background: linear-gradient(var(--answer-gradient_one),
+      var(--answer-gradient_two));
+  }
+
+  65%, 100% {
+    background: red;
+  }
+}
+
+/*WHEN WON*/
+
+.won-container {
+  place-items: center;
+  place-content: center;
+  margin: auto;
+  text-align: center;
+}
+
+.won-message {
+  /* margin: auto; */
+  
+  font-size: 4rem;
+  text-align: center;
+}
+
+/*SIDE CONTAINER WITH MONEY PYRAMID*/
+
+.money-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.money-list {
+  list-style: none;
+}
+
+.money-list-item{
+  display: flex;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  transition: 2s;
+}
+
+.money-list-item.active {
+  background-color: mediumturquoise;
+}
+
+.money-list-item_number {
+  width: 8rem;
+  margin-top: 0.6rem;
+  font-size: 1.6rem;
+  font-weight: 200;
+}
+
+.money-list-item_amount {
+  font-size: 2.4rem;
+  font-weight: bold;
+}
+
+
+/*TABLET STYLES*/
+
+@media(max-width:966px) {
+  .app {
+    grid-template-columns: 65% 35%;
+  }
+
+  .chat-gpt_answer, .explanation {
+    top: 10%;
+    left: 5%;
+    max-width: 45rem;
+  }
+
+  .top-items {
+    top: 25%;
+  }
+  
+  .won-message {
+    font-size: 3rem;
+  }
+
+
+}
+
+/*MOBILE STYLES*/
+
+@media(max-width:765px) {
+
+  .top-container {
+    height: 45%;
+  }
+
+  .chat-gpt_answer, .explanation {
+    top: 5%;
+    left: 5%;
+    max-width: 35rem;
+    font-size: 1.5rem;
+  }
+
+  .top-items{
+    width: 8rem;
+    height: 8rem;
+    font-size: 2rem;
+    top: 0;
+  }
+
+  .time {
+    position: absolute;
+    left: 22%;
+    top: 28%;
+  }
+
+  .ask-gpt {
+    font-size: 1.5rem;
+  }
+
+  .question {
+    font-size: 2rem;
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .answers-container {
+    flex-direction: column;
+  }
+
+  .answer {
+    width: 90%;
+    font-size: 1.6rem;
+  }
+
+  .money-list-item_number {
+    width: 2rem;
+    margin-right: 0.5rem;
+    font-size: 1.4rem;
+    font-weight: 200;
+  }
+
+  .money-list-item_amount {
+    font-size: 1.8rem;
+  }
+
+  .won-message {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+
+}
+
+/*GALAZY FOLD AND SMALLER*/
+@media(max-width:376px) {
+
+  .start-headline {
+      font-size: 3rem;
+  }
+
+  .top-container {
+    height: 40%;
+  }
+
+  .chat-gpt_answer, .explanation {
+    top: 2%;
+    max-width: 25rem;
+    font-size: 1.3rem;
+  }
+
+  .top-items{
+    width: 7rem;
+    height: 7rem;
+    font-size: 1.6rem;
+    top: 0;
+  }
+
+  .time {
+    position: absolute;
+    left: 20%;
+    top: 25%;
+  }
+
+  .ask-gpt {
+    font-size: 1.3rem;
+  }
+
+  .question {
+    font-size: 1.6rem;
+    padding: 0.8rem;
+  }
+
+  .answers-container {
+    flex-direction: column;
+  }
+
+  .answer {
+    width: 90%;
+    font-size: 1.3rem;
+    padding: 0.7rem;
+  }
+
+  .money-list-item_number {
+    width: 1rem;
+    margin-top: 0.2rem;
+    font-size: 1rem;
+    font-weight: 200;
+  }
+
+  .money-list-item_amount {
+    font-size: 1.35rem;
+  }
+}
+
