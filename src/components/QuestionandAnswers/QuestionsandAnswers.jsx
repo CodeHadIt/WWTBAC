@@ -8,6 +8,7 @@ import AllConfettis from '../Confetti/AllConfettis';
 import Timer from './Timer';
 import LifeLine from '../LifeLines/LifeLine';
 
+const key = process.env.REACT_APP_OPENAI_API_KEY;
 
 const QuestionsandAnswers = props => {
     const [question, setQuestion] = useState(null);
@@ -142,11 +143,11 @@ const QuestionsandAnswers = props => {
             answers: updatedAnswers,
         }))
     }
-
+    
     const handleUseAskChatGPT = async () => {
         
         const configuration = new Configuration({
-          apiKey: "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",
+          apiKey: key,
         });
 
         delete configuration.baseOptions.headers["User-Agent"];
