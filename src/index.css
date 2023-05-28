@@ -32,12 +32,16 @@ a:hover{
 }
 
 .app {
-  height: 100vh;
+  /* height: 100vh; */
   display: grid;
   grid-template-columns: 75% 25%;
   background-color: var(--overall-bg);
   color: white;
-  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left:0;
+  bottom: 0;
+  right: 0;
 }
 
 /*MAIN CONTAINER WITH QUESTIONS AND TIMER*/

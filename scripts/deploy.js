@@ -17,7 +17,7 @@ async function main() {
   console.log(`setting token address ... ${settingTokenAddress.hash}`);
 
   if(network.config.chainId === 5 && process.env.ETHERSCAN_API_KEY){
-    console.log("... waiting for block confirmations to verify manger")
+    console.log("... waiting for block confirmations to verify manager")
     await managerContract.deployTransaction.wait(5);
     await verify(managerContract.address, []);
 

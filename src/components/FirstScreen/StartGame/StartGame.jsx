@@ -16,12 +16,21 @@ const StartGame = props => {
     }, [account])
 
     const connectWallet =  async () => {
-        try {
-            const account = await window.ethereum.request({method: "eth_requestAccounts",});
-            setAccount(account[0]);
-        } catch (error) {
-            console.log(error.message);
+        if (window.ethereum.networkVersion == "5") {
+            try {
+                const account = await window.ethereum.request({
+                    method: "eth_requestAccounts",
+                });
+                setAccount(account[0]);
+            } catch (error) {
+                console.log(error.message);
+            }
+        } else {
+            alert(
+            "Please Open App in a browser with an Ethereum based wallet and switch to Goerli testnet"
+            );
         }
+
     }
 
     return (

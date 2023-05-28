@@ -44,10 +44,12 @@ function App() {
 
 
   useEffect(()=> {
-    if(timeElapsed) {
+    if (!window.ethereum) {
+      alert(
+        "Please Open App in a browser with an Ethereum based wallet and switch to Goerli testnet"
+      );
+    } else if (window.ethereum && timeElapsed) {
       fundPlayer();
-    } else{
-      return;
     }
   }, [timeElapsed])
 
@@ -66,21 +68,24 @@ function App() {
   }
 
   const fundPlayer = async () => {
-    
+
     const withdrawAmount = String(parseInt(amountWon.slice(2)));
     if(withdrawAmount === "0") {
       return;
+    } 
+    if(withdrawAmount > "0" && window.ethereum.networkVersion == "5") {
+        try {
+          const transactionResponse = await managerContract.innerTransfer(
+            userAccount,
+            withdrawAmount, 
+            {gasLimit: 60000}
+          );
+          await transactionResponse.wait();
+        } catch (error) {
+          console.log(error.message);
+        }
     } else {
-          try {
-            const transactionResponse = await managerContract.innerTransfer(
-              userAccount,
-              withdrawAmount, 
-              {gasLimit: 60000}
-            );
-            await transactionResponse.wait();
-          } catch (error) {
-            console.log(error.message);
-          }
+      alert("Please switch to the Goerli testnet to get funded");
     }
   }
 
