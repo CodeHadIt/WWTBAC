@@ -22,6 +22,8 @@ const QuestionsandAnswers = props => {
     const [chatGPTAnswer, setChatGPTAnswer] = useState("");
     const [showPopUp, setShowPopUp] = useState({type: "", show: false});
 
+    console.log(key)
+
 
     //When we recieve the data and whenever the currentQuestionNumber changes, we call this useEffect. essentailly it calls the questionSetter function based on the currentQuestionNumber;
     useEffect(()=> {
@@ -169,7 +171,6 @@ const QuestionsandAnswers = props => {
     };
 
     const clearPopUp = ()=> {
-        
         if(showPopUp.type === "explanation") {
             setShowPopUp((prevObj) => ({ ...prevObj, show: false }));
             props.setCurrentQuestionNum((prevNum) => prevNum + 1);

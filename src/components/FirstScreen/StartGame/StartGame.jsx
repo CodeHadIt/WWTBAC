@@ -16,14 +16,18 @@ const StartGame = props => {
     }, [account])
 
     const connectWallet =  async () => {
-        if (window.ethereum.networkVersion == "5") {
-            try {
-                const account = await window.ethereum.request({
+        if (window.ethereum != undefined) {
+            if(window.ethereum.networkVersion == "5") {
+                try {
+                  const account = await window.ethereum.request({
                     method: "eth_requestAccounts",
-                });
-                setAccount(account[0]);
-            } catch (error) {
-                console.log(error.message);
+                  });
+                  setAccount(account[0]);
+                } catch (error) {
+                  console.log(error.message);
+                }
+            } else {
+                alert("please Switch to Goerli Network")
             }
         } else {
             alert(

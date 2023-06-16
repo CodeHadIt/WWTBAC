@@ -15,17 +15,17 @@ const Backdrop = props => {
 const Overlay = props => {
     return (
         <Card className={styles.modal}>
-            <header className={styles.header}>
+            <div className={styles.header}>
                 <h2>{props.title}</h2>
-            </header>
+            </div>
 
             <div className={styles.content}>
                 <p>{props.message}</p>
             </div>
 
-            <footer className={styles.actions}>
+            <div className={styles.actions}>
                 <Button onClick={props.onClear}>Okay</Button>
-            </footer>
+            </div>
         </Card>
     );
 };

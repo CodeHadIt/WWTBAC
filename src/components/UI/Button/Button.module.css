@@ -9,7 +9,3 @@
     cursor: pointer;
     transition: 3s;
 }
-
-.btn:active {
-    transform: scale(0.3);
-}

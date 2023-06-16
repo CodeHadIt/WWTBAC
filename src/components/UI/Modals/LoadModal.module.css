@@ -17,8 +17,9 @@
     overflow: hidden;
 }
 
+
 .header {
-    background: var(--answer-gradient_one);
+    background-color: var(--answer-gradient_one);
     padding: 2rem;
     text-align: center;
 }

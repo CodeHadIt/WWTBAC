@@ -16,9 +16,9 @@ const Backdrop = (props) => {
 const Overlay = (props) => {
     return (
         <Card className={styles.modal}>
-            <header className={styles.header}>
+            <div className={styles.header}>
                 <h2>Game Instructions</h2>
-            </header>
+            </div>
 
             <div className={styles.content}>
                 <ol className={styles.rules}>
@@ -38,9 +38,9 @@ const Overlay = (props) => {
                 </ol>
             </div>
 
-            <footer className={styles.actions}>
+            <div className={styles.actions}>
                 <Button onClick={props.onConnect}>Connect Wallet</Button>
-            </footer>
+            </div>
         </Card>
     );
 };
