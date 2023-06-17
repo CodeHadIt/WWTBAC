@@ -22,7 +22,7 @@ import Confetti from "react-confetti";
 function App() {
 
   const [gameStarted, setGameStarted] = useState(false);
-  const [numberOfTimesPlayed, setnumberOfTimesPlayed] = useState(
+  const [numberOfFreePlays, setnumberOfFreePlays] = useState(
     localStorage.getItem("timesPlayed") || 0
   );
   const [currentQuestionNum, setCurrentQuestionNum] = useState(1);
@@ -47,37 +47,47 @@ function App() {
 
 
   useEffect(()=> {
-    if(numberOfTimesPlayed >= 3 && timeElapsed && !userAccount) {
+    if(numberOfFreePlays >= 3 && timeElapsed && !userAccount) {
       if(!window.ethereum) {
         return;
       }
-    } else if (numberOfTimesPlayed < 3 && timeElapsed && userAccount) {
+    } else if (numberOfFreePlays < 3 && timeElapsed && userAccount) {
       if(window.ethereum) {
         fundPlayer();
       } 
     }
-  }, [numberOfTimesPlayed, timeElapsed, userAccount])
+  }, [numberOfFreePlays, timeElapsed, userAccount])
 
   const getAccount = account => {
     setUserAccount(account);
   }
 
   const startGame = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const ManagerContract = new ethers.Contract(ManagerContractAddress, ManagerAbi, signer);
-    const TokenContract = new ethers.Contract(TokenContractAddress, Tokenabi, signer);
-    setManagerContract(ManagerContract);
-    setTokenContract(TokenContract);
-    const played = Number(numberOfTimesPlayed) + 1;
-    localStorage.setItem("timesPlayed", played);
-    const timesPlayed = localStorage.getItem("timesPlayed");
-    setnumberOfTimesPlayed(timesPlayed);
+    if(userAccount) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const ManagerContract = new ethers.Contract(
+        ManagerContractAddress,
+        ManagerAbi,
+        signer
+      );
+      const TokenContract = new ethers.Contract(
+        TokenContractAddress,
+        Tokenabi,
+        signer
+      );
+      setManagerContract(ManagerContract);
+      setTokenContract(TokenContract);
+    } else {
+      const played = Number(numberOfFreePlays) + 1;
+      localStorage.setItem("timesPlayed", played);
+      const timesPlayed = localStorage.getItem("timesPlayed");
+      setnumberOfFreePlays(timesPlayed);
+    }
     setGameStarted(true);
   }
 
   const fundPlayer = async () => {
-
     const withdrawAmount = String(parseInt(amountWon.slice(2)));
     if(withdrawAmount === "0") {
       return;
@@ -104,10 +114,10 @@ function App() {
     setCurrentQuestionNum(1);
     setAmountWon("$ 0");
     if(!userAccount) {
-      const played = Number(numberOfTimesPlayed) + 1;
+      const played = Number(numberOfFreePlays) + 1;
       localStorage.setItem("timesPlayed", played);
       const timesPlayed = localStorage.getItem("timesPlayed");
-      setnumberOfTimesPlayed(timesPlayed);
+      setnumberOfFreePlays(timesPlayed);
     }
   }
 
@@ -131,7 +141,7 @@ function App() {
       );
     }
     localStorage.removeItem("timesPlayed");
-    setnumberOfTimesPlayed(0);
+    setnumberOfFreePlays(0);
   };
 
   return (
@@ -157,7 +167,7 @@ function App() {
                   )}
                   <Button onClick={restartGame}>Replay</Button>
                 </div>
-                {numberOfTimesPlayed >= 3 && <ConnectModal onConnect={connectAccount} />}
+                {numberOfFreePlays >= 3 && <ConnectModal onConnect={connectAccount} />}
               </>
             ) : (
               <>

@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 import Button from '../../UI/Button/Button';
 import { LoadModal } from '../../UI/Modals/LoadModal';
-// import LoadModal from '../../UI/Modals/LoadModal';
 import styles from './StartGame.module.css'
 
 const StartGame = props => {
     const [walletConnected, setWalletConnected] = useState(false);
-    // const [walletNotConnected, setWalletNotConnected] = useState(false);
     const [account, setAccount] = useState (null);
 
     useEffect(()=> {
@@ -52,7 +50,6 @@ const StartGame = props => {
             </div>
             {!walletConnected && 
             <LoadModal 
-                // onConnect={connectWallet}
                 onConnect={connectWallet}
                 onPlay={playGame}
             />}
