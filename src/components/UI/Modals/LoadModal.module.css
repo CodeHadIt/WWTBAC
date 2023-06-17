@@ -17,7 +17,6 @@
     overflow: hidden;
 }
 
-
 .header {
     background-color: var(--answer-gradient_one);
     padding: 2rem;
@@ -35,7 +34,15 @@
     font-size: 1.8rem;
 }
 
+.headline{
+    color: var(--accent);
+    text-align: center;
+    border-bottom: 5rem;
+    margin-bottom: 2rem;
+}
+
 .rules > * {
+    color: black;
     list-style-type: upper-roman;
     font-weight: 600;
 }
@@ -46,7 +53,7 @@
 
 .sub_rules {
     font-weight: 500;
-    list-style-type: square;
+    list-style-type: circle;
     list-style-position: inside;
 }
 
@@ -60,10 +67,20 @@
     text-align: center;
 }
 
+.actions button {
+    margin-right: 10px;
+    margin-top: 20px;
+}
+
+.playButton {
+    background: var(--answer-gradient_one);
+    color: red;
+}
+
 @media (max-width: 765px) {
 
     .modal {
-        top: 20vh;
+        top: 10vh;
         left: 10%;
         width: 80%;
     }
@@ -86,9 +103,25 @@
 
 @media(max-width:376px) {
 
+    .headline {
+        font-size: 1.2rem;
+    }
+
+    .modal {
+        top: 5vh;
+    }
+
+    .rules > * {
+        font-size: 1.2rem;
+    }
+
   .sub_rules * {
         padding: 0.3rem;
         font-size: 1rem;
+    }
+
+    .actions button {
+        margin-top: 10px;
     }
 
 }

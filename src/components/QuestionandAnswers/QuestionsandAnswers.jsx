@@ -21,10 +21,6 @@ const QuestionsandAnswers = props => {
     const [confettiTime, setConfettiTime] = useState(false);
     const [chatGPTAnswer, setChatGPTAnswer] = useState("");
     const [showPopUp, setShowPopUp] = useState({type: "", show: false});
-
-    console.log(key)
-
-
     //When we recieve the data and whenever the currentQuestionNumber changes, we call this useEffect. essentailly it calls the questionSetter function based on the currentQuestionNumber;
     useEffect(()=> {
         if(props.currentQuestionNum < 6) {

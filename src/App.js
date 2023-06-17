@@ -11,6 +11,7 @@ import moneyData from "./components/data/moneyData";
 import MoneyList from "./components/MoneyList/MoneyList";
 import Button from "./components/UI/Button/Button";
 import StartGame from "./components/FirstScreen/StartGame/StartGame";
+import { ConnectModal } from "./components/UI/Modals/LoadModal";
 import QuestionsandAnswers from "./components/QuestionandAnswers/QuestionsandAnswers";
 import questionData from "./components/data/questionData";
 import Confetti from "react-confetti"; 
@@ -20,8 +21,10 @@ import Confetti from "react-confetti";
 
 function App() {
 
-
   const [gameStarted, setGameStarted] = useState(false);
+  const [numberOfTimesPlayed, setnumberOfTimesPlayed] = useState(
+    localStorage.getItem("timesPlayed") || 0
+  );
   const [currentQuestionNum, setCurrentQuestionNum] = useState(1);
   const [timeElapsed, setTimeElapsed] = useState(false);
   const [gameWon, setGameWon] = useState(false);
@@ -44,14 +47,16 @@ function App() {
 
 
   useEffect(()=> {
-    if (!window.ethereum) {
-      alert(
-        "Please Open App in a browser with an Ethereum based wallet and switch to Goerli testnet"
-      );
-    } else if (window.ethereum && timeElapsed) {
-      fundPlayer();
+    if(numberOfTimesPlayed >= 3 && timeElapsed && !userAccount) {
+      if(!window.ethereum) {
+        return;
+      }
+    } else if (numberOfTimesPlayed < 3 && timeElapsed && userAccount) {
+      if(window.ethereum) {
+        fundPlayer();
+      } 
     }
-  }, [timeElapsed])
+  }, [numberOfTimesPlayed, timeElapsed, userAccount])
 
   const getAccount = account => {
     setUserAccount(account);
@@ -64,6 +69,10 @@ function App() {
     const TokenContract = new ethers.Contract(TokenContractAddress, Tokenabi, signer);
     setManagerContract(ManagerContract);
     setTokenContract(TokenContract);
+    const played = Number(numberOfTimesPlayed) + 1;
+    localStorage.setItem("timesPlayed", played);
+    const timesPlayed = localStorage.getItem("timesPlayed");
+    setnumberOfTimesPlayed(timesPlayed);
     setGameStarted(true);
   }
 
@@ -89,55 +98,85 @@ function App() {
     }
   }
 
-  //When we click restsrt, some statates are updated.
+  //When we click restart, some statates are updated.
   function restartGame() {
     setTimeElapsed(false);
     setCurrentQuestionNum(1);
     setAmountWon("$ 0");
+    if(!userAccount) {
+      const played = Number(numberOfTimesPlayed) + 1;
+      localStorage.setItem("timesPlayed", played);
+      const timesPlayed = localStorage.getItem("timesPlayed");
+      setnumberOfTimesPlayed(timesPlayed);
+    }
   }
+
+  const connectAccount = async () => {
+    if (window.ethereum != undefined) {
+      if (window.ethereum.networkVersion == "5") {
+        try {
+          const account = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          setUserAccount(account[0]);
+        } catch (error) {
+          console.log(error.message);
+        }
+      } else {
+        alert("please Switch to Goerli Network");
+      }
+    } else {
+      alert(
+        "Please Open App in a browser with an Ethereum based wallet and switch to Goerli testnet"
+      );
+    }
+    localStorage.removeItem("timesPlayed");
+    setnumberOfTimesPlayed(0);
+  };
 
   return (
     <>
-      
-      {gameStarted ? 
+      {gameStarted ? (
         <div className="app">
           <div className="main-container">
-            {timeElapsed? 
-            <div className="won-container"> 
-              {gameWon ? 
-                <>
-                  <h2 className="won-message">Congratulations, You won the Jackpot of {amountWon}</h2>
-                  <Confetti />  
-                </> :
-                <h2 className="won-message"> You won {amountWon}</h2> 
-              }
-              <Button onClick={restartGame}>Replay</Button>
-              
-            </div> : (
+            {timeElapsed ? (
               <>
-                  <QuestionsandAnswers
-                    key={moneyData.map(level => (level.id))}
-                    data={questionData} 
-                    setTimeElapsed={setTimeElapsed} 
-                    currentQuestionNum={currentQuestionNum}
-                    setCurrentQuestionNum={setCurrentQuestionNum}
-                  />
+                <div className="won-container">
+                  {gameWon ? (
+                    <>
+                      <h2 className="won-message">
+                        Congratulations, You won the Jackpot of {amountWon}
+                      </h2>
+                      <Confetti />
+                    </>
+                  ) : (
+                    <h2 className="won-message">
+                      {" "}
+                      You got {amountWon}
+                    </h2>
+                  )}
+                  <Button onClick={restartGame}>Replay</Button>
+                </div>
+                {numberOfTimesPlayed >= 3 && <ConnectModal onConnect={connectAccount} />}
+              </>
+            ) : (
+              <>
+                <QuestionsandAnswers
+                  key={moneyData.map((level) => level.id)}
+                  data={questionData}
+                  setTimeElapsed={setTimeElapsed}
+                  currentQuestionNum={currentQuestionNum}
+                  setCurrentQuestionNum={setCurrentQuestionNum}
+                />
               </>
             )}
-            
           </div>
-            
-          <MoneyList 
-            currentQuestionNum={currentQuestionNum}
-          />
+
+          <MoneyList currentQuestionNum={currentQuestionNum} />
         </div>
-      :
-        <StartGame
-          onClick={startGame}
-          onStart={getAccount}
-        />
-      }
-    
+      ) : (
+        <StartGame onClick={startGame} onStart={getAccount} />
+      )}
     </>
   );
 }

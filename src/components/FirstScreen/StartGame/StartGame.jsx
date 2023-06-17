@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 import Button from '../../UI/Button/Button';
-import LoadModal from '../../UI/Modals/LoadModal';
+import { LoadModal } from '../../UI/Modals/LoadModal';
+// import LoadModal from '../../UI/Modals/LoadModal';
 import styles from './StartGame.module.css'
 
 const StartGame = props => {
     const [walletConnected, setWalletConnected] = useState(false);
+    // const [walletNotConnected, setWalletNotConnected] = useState(false);
     const [account, setAccount] = useState (null);
 
     useEffect(()=> {
@@ -34,7 +36,10 @@ const StartGame = props => {
             "Please Open App in a browser with an Ethereum based wallet and switch to Goerli testnet"
             );
         }
+    }
 
+    const playGame = () => {
+        setWalletConnected(true);
     }
 
     return (
@@ -47,7 +52,9 @@ const StartGame = props => {
             </div>
             {!walletConnected && 
             <LoadModal 
+                // onConnect={connectWallet}
                 onConnect={connectWallet}
+                onPlay={playGame}
             />}
         </>
     );
